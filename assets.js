@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <td>${row.AssignedUser}</td>
                             <td>
                                 <button onclick="editAsset(${row.id})">Edit</button>
-                                <button onclick="confirmDelete(${row.id})">Delete</button>
+                                <button onclick="confirmDelete('${row.serialnumber}')">Delete</button>
                             </td>
                         `;
                         tbody.appendChild(rowElement);
@@ -60,17 +60,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to confirm asset deletion
 function confirmDelete(assetId) {
-    if (confirm("Are you sure you want to delete this asset?")) {
-        // User confirmed, proceed with deletion
+    console.log('Deleting asset with ID:', assetId);
 
+    if (assetId === undefined || assetId === null || assetId.trim() === '') {
+        console.error('Invalid asset ID.');
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this asset?")) {
         // AJAX request using the Fetch API
         fetch(`delete_asset.php?id=${assetId}`, {
             method: 'DELETE', // HTTP method for deletion
         })
         .then(response => {
             if (response.ok) {
-                // Asset deleted successfully
-                document.getElementById(`row-${assetId}`).remove();
+                // Attempt to find and remove the element
+                var rowElement = document.getElementById(`row-${assetId}`);
+                console.log('Row Element ID:', `row-${assetId}`);
+
+                if (rowElement) {
+                    rowElement.remove();
+                } else {
+                    console.error('Element not found:', `row-${assetId}`);
+                }
             } else {
                 return response.text().then(errorText => {
                     console.error('Error deleting asset:', errorText);
@@ -79,8 +91,14 @@ function confirmDelete(assetId) {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            // Handle the error, display a message, or take appropriate action
+            console.error('Fetch error:', error);
+
+            if (error instanceof TypeError && error.message.includes('null is not an object')) {
+                console.error('Possible issue: Element not found for removal.');
+            } else {
+                // Handle other types of errors, display a message, or take appropriate action
+                console.error('Other error:', error);
+            }
         });
     }
 }

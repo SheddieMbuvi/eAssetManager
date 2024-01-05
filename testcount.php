@@ -1,6 +1,6 @@
 <?php
-$host = 'localhost'; // The database server hostname (usually 'localhost' for local development)
-$username = 'root'; // Your database username
+$host = 'localhost'; // The database server hostname
+$username = 'root'; // database username
 $password = ''; // database password
 $database = 'amt_database'; // Your database name
 
