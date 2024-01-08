@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost'; // The database server hostname (usually 'localhost' for local development)
-$username = 'root'; // Your database username
+$host = 'localhost'; // The database server hostname
+$username = 'root'; // The database username
 $password = ''; // database password
-$database = 'amt_database'; // Your database name
+$database = 'amt_database'; // Database name
 
 // Create a connection to the database
 $conn = new mysqli($host, $username, $password, $database);
