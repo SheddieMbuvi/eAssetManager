@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"]; // Corrected from "name" to "email"
     $password = $_POST["password"];
 
-    // Validate and sanitize user input if needed
+
 
     // Query the database to check for the email and password
     $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
